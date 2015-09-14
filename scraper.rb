@@ -45,7 +45,7 @@ def scrape_person(url)
     party: find_li.('party'),
     faction: find_li.('party organization'),
     area: find_li.('electoral district'),
-    start_date: find_li.('date of commencement'),
+    start_date: find_li.('date of commencement').to_s.gsub('/','-'),
     term: 8,
     source: url.to_s,
   }
