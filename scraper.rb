@@ -50,7 +50,11 @@ def scrape_person(url)
     source: url.to_s,
   }
   data[:image] = URI.join(url, data[:image]).to_s unless data[:image].to_s.empty?
-  puts data[:name]
+
+  zh_url = url.to_s.sub('en/03_leg','03_leg/0301_main')
+  noko_zh = noko_for(zh_url)
+  data[:name__zh] = noko_zh.css('td.leg03_titbg07').text.sub('委員','')
+
   ScraperWiki.save_sqlite([:id, :term], data)
 end
 
