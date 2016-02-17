@@ -37,7 +37,7 @@ def scrape_person(url)
   }
 
   data = { 
-    id: url.to_s[/lgno=(\d+)/, 1],
+    id: '9' + url.to_s[/lgno=(\d+)/, 1],
     name: box.css('div.name').text.tidy.split(/\s*,\s*/, 2).reverse.join(' '),
     sort_name: box.css('div.name').text.tidy,
     image: box.css('img.leg03_pic/@src').text,
@@ -46,14 +46,14 @@ def scrape_person(url)
     faction: find_li.('party organization'),
     area: find_li.('electoral district'),
     start_date: find_li.('date of commencement').to_s.gsub('/','-'),
-    term: 8,
+    term: 9,
     source: url.to_s,
   }
   data[:image] = URI.join(url, data[:image]).to_s unless data[:image].to_s.empty?
 
   zh_url = url.to_s.sub('en/03_leg','03_leg/0301_main')
   noko_zh = noko_for(zh_url)
-  data[:name__zh] = noko_zh.css('td.leg03_titbg07').text.sub('委員','')
+  data[:name__zh] = noko_zh.css('td.leg03_titbg07').text.sub('委員','').tidy
 
   ScraperWiki.save_sqlite([:id, :term], data)
 end
